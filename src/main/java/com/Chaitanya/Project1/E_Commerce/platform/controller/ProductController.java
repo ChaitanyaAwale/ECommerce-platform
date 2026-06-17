@@ -29,12 +29,12 @@ public class ProductController {
     @GetMapping("/{id}")
     public  ProductResponseDto getProductById(@PathVariable Long Id)
     {
-        return ProductService.getProductById(Id);
+        return productService.getProductById(Id);
     }
     @PutMapping("/{id}")
-    public void UpdateProduct(@PathVariable Long id,@RequestBody ProductRequestDto productRequestDto)
+    public ProductResponseDto UpdateProduct(@PathVariable Long id,@RequestBody ProductRequestDto productRequestDto)
     {
-        productService.UpdateProduct(id,productRequestDto);
+       return  productService.UpdateProduct(id,productRequestDto);
     }
 
     @DeleteMapping("/{id}")
