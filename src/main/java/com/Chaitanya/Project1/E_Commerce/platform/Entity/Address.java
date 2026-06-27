@@ -1,7 +1,12 @@
 package com.Chaitanya.Project1.E_Commerce.platform.Entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.net.ssl.SSLSession;
+@Setter
+@Getter
 @Entity
 public class Address {
 
@@ -12,8 +17,8 @@ public class Address {
     private String street;
     private String city;
 
-    private String State;
-    private String Country;
+    private String state;
+    private String country;
 
     private String pincode;
     @ManyToOne
@@ -21,4 +26,7 @@ public class Address {
     private User user;
 
 
-    }
+
+
+
+}
