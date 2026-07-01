@@ -6,12 +6,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
+@Builder
 @Getter
 //@Data
 public class LoginResponseDto {
-
-   private String Jwt;
-    private String Username;
-
+private Long userId;
+   private String token;
+    private String username;
+private String message;
 
 }
