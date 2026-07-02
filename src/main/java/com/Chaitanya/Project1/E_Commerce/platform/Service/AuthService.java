@@ -2,6 +2,7 @@ package com.Chaitanya.Project1.E_Commerce.platform.Service;
 
 import com.Chaitanya.Project1.E_Commerce.platform.Entity.User;
 import com.Chaitanya.Project1.E_Commerce.platform.Enum.RoleType;
+import com.Chaitanya.Project1.E_Commerce.platform.Security.JwtService;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.LoginRequestDto;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.LoginResponseDto;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.SignupRequestDto;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 
 public class AuthService {
+    private final JwtService jwtService;
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -48,7 +50,7 @@ public class AuthService {
         {
             throw new RuntimeException("Password Incorrect");
         }
-        String token=null;
+        String token=jwtService.generateToken(user);
         return LoginResponseDto.builder()
                 .userId(user.getId())
                 .username(user.getUsername())

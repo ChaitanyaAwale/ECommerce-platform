@@ -27,6 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader= request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
+        System.out.println("=== JWT FILTER EXECUTED ===");
         // No Authorization header
         if(authHeader== null || !authHeader.startsWith("Bearer "))
         {
@@ -36,6 +37,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 //        remove Bearer
          jwt=authHeader.substring(7);
+        System.out.println("Header: [" + authHeader + "]");
+        System.out.println("JWT: [" + jwt + "]");
 
 //        Extract email from jwt
      userEmail=jwtService.extractUsername(jwt);
