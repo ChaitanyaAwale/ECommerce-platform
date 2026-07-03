@@ -4,6 +4,7 @@ package com.Chaitanya.Project1.E_Commerce.platform.controller;
 import com.Chaitanya.Project1.E_Commerce.platform.Service.AddressService;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.AddressRequestDto;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.AddressResponseDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class AddressController {
 
     @PostMapping
     public AddressResponseDto createAddress(
-            @RequestBody AddressRequestDto dto) {
+           @Valid @RequestBody AddressRequestDto dto) {
 
         return addressService.createAddress(dto);
     }
@@ -46,7 +47,7 @@ public class AddressController {
     @PutMapping("/{id}")
     public AddressResponseDto updateAddress(
             @PathVariable Long id,
-            @RequestBody AddressRequestDto dto) {
+            @Valid  @RequestBody AddressRequestDto dto) {
 
         return addressService.updateAddress(id, dto);
     }

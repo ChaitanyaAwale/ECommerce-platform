@@ -4,6 +4,7 @@ package com.Chaitanya.Project1.E_Commerce.platform.controller;
 import com.Chaitanya.Project1.E_Commerce.platform.Service.CategoryService;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.CategoryRequestDto;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.CategoryResponseDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public CategoryResponseDto createCategory(@RequestBody CategoryRequestDto dto)
+    public CategoryResponseDto createCategory(@Valid @RequestBody CategoryRequestDto dto)
     {
         return categoryService.createCategory(dto);
     }
@@ -33,7 +34,7 @@ public class CategoryController {
         return categoryService.getCategoryById(id);
     }
     @PutMapping("/id")
-    public CategoryResponseDto updateCategory(@PathVariable Long id,@RequestBody CategoryRequestDto dto)
+    public CategoryResponseDto updateCategory(@PathVariable Long id,@Valid @RequestBody CategoryRequestDto dto)
     {
         return categoryService.updateCategory(id,dto);
     }
