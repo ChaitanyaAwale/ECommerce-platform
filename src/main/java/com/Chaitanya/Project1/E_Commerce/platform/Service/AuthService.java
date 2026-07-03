@@ -7,6 +7,9 @@ import com.Chaitanya.Project1.E_Commerce.platform.dto.LoginRequestDto;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.LoginResponseDto;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.SignupRequestDto;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.SignupResponseDto;
+import com.Chaitanya.Project1.E_Commerce.platform.exceptions.BadRequestException;
+import com.Chaitanya.Project1.E_Commerce.platform.exceptions.DuplicateResourceException;
+import com.Chaitanya.Project1.E_Commerce.platform.exceptions.UnautohorizeException;
 import com.Chaitanya.Project1.E_Commerce.platform.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +27,7 @@ public class AuthService {
     public SignupResponseDto signup(SignupRequestDto dto)
     {
         if(userRepository.findByEmail(dto.getEmail()).isPresent()){
-            throw new RuntimeException("user with email already exists");
+            throw new DuplicateResourceException("user with email already exists");
         }
         User user=User.builder()
                 .username(dto.getUsername())
@@ -45,10 +48,10 @@ public class AuthService {
 
     public LoginResponseDto login(LoginRequestDto dto)
     {
-        User user=userRepository.findByEmail(dto.getEmail()).orElseThrow(()-> new RuntimeException("User with this email doesnt exist"));
+        User user=userRepository.findByEmail(dto.getEmail()).orElseThrow(()-> new DuplicateResourceException("User with this email doesnt exist"));
         if(!passwordEncoder.matches(dto.getPassword(),user.getPassword()))
         {
-            throw new RuntimeException("Password Incorrect");
+            throw new UnautohorizeException("Password Incorrect");
         }
         String token=jwtService.generateToken(user);
         return LoginResponseDto.builder()

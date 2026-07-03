@@ -4,6 +4,7 @@ import com.Chaitanya.Project1.E_Commerce.platform.Entity.Address;
 import com.Chaitanya.Project1.E_Commerce.platform.Entity.User;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.AddressRequestDto;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.AddressResponseDto;
+import com.Chaitanya.Project1.E_Commerce.platform.exceptions.ResourceNotFoundException;
 import com.Chaitanya.Project1.E_Commerce.platform.repository.AddressRepository;
 import com.Chaitanya.Project1.E_Commerce.platform.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +50,7 @@ public class AddressService {
     public AddressResponseDto getAddressById(Long id) {
 
         Address address = addressRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Address not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
 
         return mapToResponseDto(address);
     }
@@ -69,7 +70,7 @@ public class AddressService {
                                             AddressRequestDto dto) {
 
         Address address = addressRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Address not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
 
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));

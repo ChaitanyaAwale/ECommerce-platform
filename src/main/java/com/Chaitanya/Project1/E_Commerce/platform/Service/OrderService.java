@@ -3,6 +3,7 @@ package com.Chaitanya.Project1.E_Commerce.platform.Service;
 
 import com.Chaitanya.Project1.E_Commerce.platform.Entity.*;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.OrderDto;
+import com.Chaitanya.Project1.E_Commerce.platform.exceptions.ResourceNotFoundException;
 import com.Chaitanya.Project1.E_Commerce.platform.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -38,12 +39,12 @@ public class OrderService {
     @Transactional
     public OrderDto placeOrder(Long userId) {
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("No user found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("No user found"));
 
-        Cart cart = cartRepository.findByUser_Id(userId).orElseThrow(() -> new RuntimeException("No cart found"));
+        Cart cart = cartRepository.findByUser_Id(userId).orElseThrow(() -> new ResourceNotFoundException("No cart found"));
 
         if (cart.getCartItems().isEmpty()) {
-            throw new RuntimeException("cart is Empty");
+            throw new ResourceNotFoundException("cart is Empty");
 
         }
 

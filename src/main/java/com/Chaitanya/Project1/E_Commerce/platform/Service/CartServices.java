@@ -6,6 +6,7 @@ import com.Chaitanya.Project1.E_Commerce.platform.Entity.Product;
 import com.Chaitanya.Project1.E_Commerce.platform.Entity.User;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.CartDto;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.CartItemDto;
+import com.Chaitanya.Project1.E_Commerce.platform.exceptions.ResourceNotFoundException;
 import com.Chaitanya.Project1.E_Commerce.platform.repository.CartItemRepository;
 import com.Chaitanya.Project1.E_Commerce.platform.repository.CartRepository;
 import com.Chaitanya.Project1.E_Commerce.platform.repository.ProductRepository;
@@ -32,9 +33,9 @@ public class CartServices {
             Integer quantity
     )
     {
-        User user= userRepository.findById(userId).orElseThrow(()-> new RuntimeException("User not found"));
-       Cart cart=cartRepository.findByUser_Id(userId).orElseThrow(()->new RuntimeException("Cart not found"));
-        Product product=productRepository.findById(productId).orElseThrow(()-> new RuntimeException("No product exists"));
+        User user= userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User not found"));
+       Cart cart=cartRepository.findByUser_Id(userId).orElseThrow(()->new ResourceNotFoundException("Cart not found"));
+        Product product=productRepository.findById(productId).orElseThrow(()-> new ResourceNotFoundException("No product exists"));
 
         if(product.getStockQuantity()<quantity)
         {
@@ -54,18 +55,18 @@ public class CartServices {
     public CartDto getCart(Long userId) {
 //        User user=userRepository.findById(userId).orElseThrow(()->new RuntimeException("No user found"));
 //        Cart cart=cartRepository.findById(user).orElseThrow(()->new RuntimeException("no cart  found"));
-        Cart cart = cartRepository.findByUser_Id(userId).orElseThrow(()-> new RuntimeException("No cart found"));
+        Cart cart = cartRepository.findByUser_Id(userId).orElseThrow(()-> new ResourceNotFoundException("No cart found"));
         CartDto dto=modelMapper.map(cart,CartDto.class);
         return dto;
 
     }
     public void removeProductFromCart(Long userId, Long productId) {
 
-        Cart cart = cartRepository.findByUser_Id(userId).orElseThrow(()-> new RuntimeException("No cart found"));
+        Cart cart = cartRepository.findByUser_Id(userId).orElseThrow(()-> new ResourceNotFoundException("No cart found"));
 
         CartItem cartItem = cartItemRepository
                 .findByCart_IdAndProduct_Id(cart.getId(), productId)
-                .orElseThrow(() -> new RuntimeException("Product not found in cart"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found in cart"));
 
         cartItemRepository.delete(cartItem);
     }

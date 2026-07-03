@@ -3,6 +3,7 @@ package com.Chaitanya.Project1.E_Commerce.platform.Service;
 import com.Chaitanya.Project1.E_Commerce.platform.Entity.Category;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.CategoryRequestDto;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.CategoryResponseDto;
+import com.Chaitanya.Project1.E_Commerce.platform.exceptions.ResourceNotFoundException;
 import com.Chaitanya.Project1.E_Commerce.platform.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -37,7 +38,7 @@ public class CategoryService {
     public CategoryResponseDto getCategoryById(Long id) {
 
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         return modelMapper.map(category, CategoryResponseDto.class);
     }
@@ -46,7 +47,7 @@ public class CategoryService {
     public CategoryResponseDto updateCategory(Long id, CategoryRequestDto dto) {
 
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         category.setName(dto.getName());
 
@@ -59,7 +60,7 @@ public class CategoryService {
     public void deleteCategory(Long id) {
 
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         categoryRepository.delete(category);
     }
