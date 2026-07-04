@@ -11,8 +11,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class OrderDto {
 
-    private Long UserId;
+    private Long userId;
     private BigDecimal totalAmount;
-    private String Status;
+    private String status;
 
 }

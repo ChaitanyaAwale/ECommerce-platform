@@ -2,6 +2,7 @@ package com.Chaitanya.Project1.E_Commerce.platform.Service;
 
 import com.Chaitanya.Project1.E_Commerce.platform.Entity.Category;
 import com.Chaitanya.Project1.E_Commerce.platform.Entity.Product;
+import com.Chaitanya.Project1.E_Commerce.platform.dto.PageResponseDto;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.ProductRequestDto;
 import com.Chaitanya.Project1.E_Commerce.platform.dto.ProductResponseDto;
 import com.Chaitanya.Project1.E_Commerce.platform.exceptions.ResourceNotFoundException;
@@ -9,6 +10,10 @@ import com.Chaitanya.Project1.E_Commerce.platform.repository.CategoryRepository;
 import com.Chaitanya.Project1.E_Commerce.platform.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,13 +43,28 @@ public class ProductService {
         return dto;
     }
 
-    public List<ProductResponseDto> getAllProducts() {
+    public PageResponseDto<ProductResponseDto> getAllProducts(int page,int size,String sortBy,String direction)
+    {
+        Sort sort=direction.equalsIgnoreCase("asc")
+                ?Sort.by(sortBy).ascending()
+                :Sort.by(sortBy).descending();
+        Pageable pageable= PageRequest.of(page,size,sort);
 
-
-        List<Product> products = productRepository.findAll();
-        return products.stream()
+        Page<Product> productPage=productRepository.findAll(pageable);
+        List<ProductResponseDto> content = productPage.getContent()
+                .stream()
                 .map(product -> modelMapper.map(product, ProductResponseDto.class))
                 .toList();
+        return PageResponseDto.<ProductResponseDto>builder()
+                .content(content)
+                .pageNumber(productPage.getNumber())
+                .pageSize(productPage.getSize())
+                .totalElement(productPage.getTotalElements())
+                .totalPages(productPage.getTotalPages())
+                .last(productPage.isLast())
+                .build();
+
+
     }
 
     public ProductResponseDto UpdateProduct(Long id, ProductRequestDto Dto) {
