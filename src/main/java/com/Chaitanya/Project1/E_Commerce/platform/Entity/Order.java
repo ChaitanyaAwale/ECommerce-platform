@@ -1,36 +1,42 @@
 package com.Chaitanya.Project1.E_Commerce.platform.Entity;
 
-//import jakarta.persistence.Entity;
-
+import com.Chaitanya.Project1.E_Commerce.platform.Enum.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Builder
+@Table(name = "orders")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Order {
+
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long Id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private LocalDateTime orderDate;
 
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
     private BigDecimal totalAmount;
-    private String status;
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private User user;
-
-    @OneToMany(mappedBy = "order",
-    cascade=CascadeType.ALL,
-            orphanRemoval = true)
-    private List<OrderItem> orderItemList;
+    @OneToMany(
+            mappedBy = "order",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<OrderItem> orderItems = new ArrayList<>();
 }

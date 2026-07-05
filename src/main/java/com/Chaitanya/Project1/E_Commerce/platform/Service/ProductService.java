@@ -42,6 +42,34 @@ public class ProductService {
         ProductResponseDto dto=modelMapper.map(SavedProduct, ProductResponseDto.class);
         return dto;
     }
+    public List<ProductResponseDto> searchProducts(String keyword)
+    {
+        List<Product> products = productRepository.findByNameContainingIgnoreCase(keyword);
+
+        return products.stream()
+                .map(product -> modelMapper.map(product, ProductResponseDto.class))
+                .toList();
+    }
+    public List<ProductResponseDto> getProductsByCategory(Long categoryId)
+    {
+        List<Product> products = productRepository.findByCategoryId(categoryId);
+
+        return products.stream()
+                .map(product -> modelMapper.map(product, ProductResponseDto.class))
+                .toList();
+    }
+
+    public List<ProductResponseDto> getProductsByPriceRange(
+            Double minPrice,
+            Double maxPrice)
+    {
+        List<Product> products =
+                productRepository.findByPriceBetween(minPrice, maxPrice);
+
+        return products.stream()
+                .map(product -> modelMapper.map(product, ProductResponseDto.class))
+                .toList();
+    }
 
     public PageResponseDto<ProductResponseDto> getAllProducts(int page,int size,String sortBy,String direction)
     {

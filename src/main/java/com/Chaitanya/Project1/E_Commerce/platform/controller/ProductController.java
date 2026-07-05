@@ -31,6 +31,25 @@ public class ProductController {
     {
         return productService.getAllProducts(page,size,sortBy,direction);
     }
+    @GetMapping("/search")
+    public List<ProductResponseDto> searchProducts(
+            @RequestParam String keyword)
+    {
+        return productService.searchProducts(keyword);
+    }
+    @GetMapping("/category/{categoryId}")
+    public List<ProductResponseDto> getProductsByCategory(
+            @PathVariable Long categoryId)
+    {
+        return productService.getProductsByCategory(categoryId);
+    }
+    @GetMapping("/price")
+    public List<ProductResponseDto> getProductsByPriceRange(
+            @RequestParam Double minPrice,
+            @RequestParam Double maxPrice)
+    {
+        return productService.getProductsByPriceRange(minPrice, maxPrice);
+    }
 
     @GetMapping("/{id}")
     public  ProductResponseDto getProductById(@PathVariable Long id)
